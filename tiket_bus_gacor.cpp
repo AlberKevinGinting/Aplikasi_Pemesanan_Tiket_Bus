@@ -4,6 +4,8 @@
 #include <iomanip>
 #include <limits>
 #include <windows.h> // Dipakai untuk fitur warna pada konsol Windows
+#include <cstdlib> // Dipakai untuk system("cls")
+#include <ctime>
 
 using namespace std;
 
@@ -53,7 +55,9 @@ int main() {
         while (true) {
             system("cls");
             tampilkanHeader();
+            aturWarna(14); // Warna Kuning
             cout << "\n[ DATA PEMESAN ]\n";
+            aturWarna(7); // Kembali ke warna putih normal
             cout << "Masukkan Nama Pemesan : ";
             getline(cin, p.namaPemesan);
 
@@ -209,15 +213,46 @@ int main() {
         }
 
         // 4. Jumlah Tiket
+        // Simulasi status kursi dasar
+        bool kursiTerisi[33] = {false};
+        srand(time(0)); 
+
+        // Tentukan berapa banyak kursi yang ingin di-random terisi (misal: 5 kursi)
+        int jumlahKursiAcak = (rand() % 10) + 5; // Random antara 5 sampai 14 kursi terisi
+        int terisiCount = 0;
+
+        while (terisiCount < jumlahKursiAcak) {
+            // Menghasilkan angka acak antara 1 sampai 32
+            int kursiRandom = (rand() % 32) + 1; 
+
+            // Jika kursi tersebut belum terisi, ubah menjadi true
+            if (!kursiTerisi[kursiRandom]) {
+                kursiTerisi[kursiRandom] = true;
+                terisiCount++;
+            }
+        }
+
+        int kursiKosongTersedia = 0;
+        for (int i = 1; i <= 32; i++) {
+            if (!kursiTerisi[i]) {
+                kursiKosongTersedia++;
+            }
+        }
+
         while (true) {
             system("cls");
             tampilkanHeader();
+            aturWarna(14);
+            cout << "\n                  >>> PEMESANAN TIKET <<<\n";
+            aturWarna(10);
+            cout << "  Informasi: Sisa kursi kosong saat ini adalah " << kursiKosongTersedia << " kursi.\n";
+            aturWarna(7);
             cout << "\nMasukkan Jumlah Tiket yang Dibeli: ";
             cin >> p.jumlahTiket;
 
-            if (p.jumlahTiket < 1 || p.jumlahTiket > 32) {
+            if (p.jumlahTiket < 1 || p.jumlahTiket > kursiKosongTersedia) {
                 aturWarna(12);
-                cout << "\n[!] SALAH INPUT: Jumlah tiket harus antara 1 sampai 32!\n";
+                cout << "\n[!] SALAH INPUT: Jumlah tiket harus antara 1 sampai " << kursiKosongTersedia << "!\n";
                 aturWarna(7);
                 cout << "Tekan Enter untuk mencoba lagi...";
                 cin.get();
@@ -237,10 +272,6 @@ int main() {
             break; // Jika valid, keluar dari loop jumlah tiket
         }
 
-        // Simulasi status kursi dasar
-        bool kursiTerisi[33] = {false};
-        kursiTerisi[3] = true; 
-        kursiTerisi[7] = true;
 
         // Perulangan untuk input data tiap penumpang & pemilihan kursi interaktif
         for (int i = 0; i < p.jumlahTiket; i++) {
@@ -418,7 +449,7 @@ int main() {
         cout << left << setw(20) << " TOTAL BAYAR"       << ": Rp " << p.totalHarga << "\n";
         cout << left << setw(20) << " STATUS"            << ": LUNAS (NON-TUNAI)\n";
         buatGaris();
-        cout << "        Terima Kasih Telah Menggunakan Jasa Bus Paling Gacor!       \n";
+        cout << "      Terima Kasih Telah Menggunakan Jasa Bus Paling Gacor!       \n";
         cout << "===============================================================\n\n";
         aturWarna(7);
 
