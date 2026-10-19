@@ -35,7 +35,7 @@ void tampilkanHeader() {
     cout << "===============================================================\n";
     cout << "|        A P L I K A S I    P E M E S A N A N    T I K E T    |   \n";
     cout << "|                       B U S    G A C O R                    | \n";
-    cout << "|                         Made by Kevin                       | \n";
+    cout << "|                       Made by KeKaQuRaBus                   | \n";
     cout << "===============================================================\n";
     aturWarna(7); // Kembali ke warna putih normal
 }
@@ -49,46 +49,37 @@ int main() {
     Pesanan p{};
     int pilihPulau, pilihJurusan, pilihKelas, pilihBayar;
     do {
-        p = Pesanan{};
-
-        // 1. Nama Pemesan dengan Loop Sederhana (Menggunakan cls & Header)
+    
+    // 3. Pilih Kelas Bus
         while (true) {
             system("cls");
             tampilkanHeader();
-            aturWarna(14); // Warna Kuning
-            cout << "\n[ DATA PEMESAN ]\n";
-            aturWarna(7); // Kembali ke warna putih normal
-            cout << "Masukkan Nama Pemesan : ";
-            getline(cin, p.namaPemesan);
+            aturWarna(14);
+            cout << "\n                     >>> PILIH KELAS BUS <<<\n";
+            aturWarna(7);
+            cout << " 1. Executive  (Legrest + AC + Wifi)\n";
+            cout << " 2. Bisnis     (AC + Reclining Seat)\n";
+            cout << " 3. Ekonomi    (AC)\n";
+            cout << "Pilihan Kelas (1-3): ";
+            cin >> pilihKelas;
 
-            if (p.namaPemesan.empty()) {
-                aturWarna(12); // Merah
-                cout << "\n[!] SALAH INPUT: Nama pemesan tidak boleh kosong!\n";
-                aturWarna(7);
-                cout << "Tekan Enter untuk mencoba lagi...";
-                cin.get();
-                continue;
-            }
-            else if (p.namaPemesan.length() > 50) {
+            if (pilihKelas == 1) {p.kelas = "Executive"; p.hargaSatuan += 150000; break; } 
+            else if (pilihKelas == 2) {p.kelas = "Bisnis"; p.hargaSatuan += 75000; break;} 
+            else if (pilihKelas == 3) {p.kelas = "Ekonomi"; p.hargaSatuan += 50000; break;}
+            else  if (pilihKelas != 1 && pilihKelas != 2 && pilihKelas != 3) {
                 aturWarna(12);
-                cout << "\n[!] SALAH INPUT: Nama terlalu panjang! Maksimal 50 karakter.\n";
+                cout << "\n[!] SALAH INPUT: Pilihan kelas tidak valid!\n";
                 aturWarna(7);
                 cout << "Tekan Enter untuk mencoba lagi...";
                 cin.get();
+                cin.ignore();
                 continue;
+            } else {
+                break; // Jika valid, keluar dari loop kelas
             }
-            else if (p.namaPemesan.find_first_not_of("abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ ") != string::npos) {
-                aturWarna(12);
-                cout << "\n[!] SALAH INPUT: Nama hanya boleh mengandung huruf dan spasi!\n";
-                aturWarna(7);
-                cout << "Tekan Enter untuk mencoba lagi...";
-                cin.get();
-                continue;
-            }
-            else {
-                break; // Jika valid, keluar dari loop nama
-            }
+            break; // Jika valid, keluar dari loop kelas
         }
+
 
         // 2. Pilih Pulau & Jurusan
         while (true) {
@@ -110,10 +101,10 @@ int main() {
                     aturWarna(14);
                     cout << "\n                     >>> RUTE PULAU JAWA <<<\n";
                     aturWarna(7);
-                    cout << " 1. Jakarta - Bandung   (Rp 100.000)\n";
-                    cout << " 2. Jakarta - Semarang  (Rp 175.000)\n";
-                    cout << " 3. Jakarta - Jogja     (Rp 220.000)\n";
-                    cout << " 4. Surabaya - Malang   (Rp  85.000)\n";
+                    cout << " 1. Jakarta - Bandung   (Rp." << (100000 + p.hargaSatuan) << ")\n";
+                    cout << " 2. Jakarta - Semarang  (Rp." << (175000 + p.hargaSatuan) << ")\n";
+                    cout << " 3. Jakarta - Jogja     (Rp." << (220000 + p.hargaSatuan) << ")\n";
+                    cout << " 4. Surabaya - Malang   (Rp." << (85000 + p.hargaSatuan) << ")\n";
                     cout << "Pilihan Jurusan (1-4): ";
                     cin >> pilihJurusan;
 
@@ -145,9 +136,9 @@ int main() {
                     aturWarna(14);
                     cout << "\n                   >>> RUTE PULAU SUMATERA <<<\n";
                     aturWarna(7);
-                    cout << " 1. Medan - Padang      (Rp 250.000)\n";
-                    cout << " 2. Palembang - Lampung (Rp 150.000)\n";
-                    cout << " 3. Pekanbaru - Padang  (Rp 180.000)\n";
+                    cout << " 1. Medan - Padang      (Rp." << (250000 + p.hargaSatuan) << ")\n";
+                    cout << " 2. Palembang - Lampung (Rp." << (150000 + p.hargaSatuan) << ")\n";
+                    cout << " 3. Pekanbaru - Padang  (Rp." << (180000 + p.hargaSatuan) << ")\n";
                     cout << "Pilihan Jurusan (1-3): ";
                     cin >> pilihJurusan;
 
@@ -181,38 +172,8 @@ int main() {
             }
             break; // Jika valid, keluar dari loop pulau
         }
-
-        // 3. Pilih Kelas Bus
-        while (true) {
-            system("cls");
-            tampilkanHeader();
-            aturWarna(14);
-            cout << "\n                     >>> PILIH KELAS BUS <<<\n";
-            aturWarna(7);
-            cout << " 1. Executive  (+ Rp 150.000 - Legrest + AC + Wifi)\n";
-            cout << " 2. Bisnis     (+ Rp  75.000 - AC + Reclining Seat)\n";
-            cout << " 3. Ekonomi    (+ Rp  50.000 - AC)\n";
-            cout << "Pilihan Kelas (1-3): ";
-            cin >> pilihKelas;
-
-            if (pilihKelas == 1) {p.kelas = "Executive"; p.hargaSatuan += 150000; break; } 
-            else if (pilihKelas == 2) {p.kelas = "Bisnis"; p.hargaSatuan += 75000; break;} 
-            else if (pilihKelas == 3) {p.kelas = "Ekonomi"; p.hargaSatuan += 50000; break;}
-            else  if (pilihKelas != 1 && pilihKelas != 2 && pilihKelas != 3) {
-                aturWarna(12);
-                cout << "\n[!] SALAH INPUT: Pilihan kelas tidak valid!\n";
-                aturWarna(7);
-                cout << "Tekan Enter untuk mencoba lagi...";
-                cin.get();
-                cin.ignore();
-                continue;
-            } else {
-                break; // Jika valid, keluar dari loop kelas
-            }
-            break; // Jika valid, keluar dari loop kelas
-        }
-
-        // 4. Jumlah Tiket
+        
+// 4. Jumlah Tiket
         // Simulasi status kursi dasar
         bool kursiTerisi[33] = {false};
         srand(time(0)); 
@@ -238,7 +199,6 @@ int main() {
                 kursiKosongTersedia++;
             }
         }
-
         while (true) {
             system("cls");
             tampilkanHeader();
@@ -270,6 +230,49 @@ int main() {
             break; // Jika valid, keluar dari loop jumlah tiket
             }
             break; // Jika valid, keluar dari loop jumlah tiket
+        }
+
+        // Perhitungan Diskon (>1 Tiket)
+        long long subtotal = p.hargaSatuan * p.jumlahTiket;
+        if (p.jumlahTiket > 1) {
+            p.diskon = subtotal * 0.10; // Diskon 10%
+        } else {
+            p.diskon = 0;
+        }
+        p.totalHarga = subtotal - (long long)p.diskon;
+
+        // 5. Pembayaran Non-Tunai
+        while (true) {
+            system("cls");
+            tampilkanHeader();
+            aturWarna(14);
+            cout << "\n               >>> METODE PEMBAYARAN NON-TUNAI <<<\n";
+            aturWarna(10);
+            cout << "           Total Dana yang Harus Dibayar: Rp " << p.totalHarga << "\n";
+            aturWarna(7);
+            cout << " 1. Transfer Bank (BCA / Mandiri / BRI)\n";
+            cout << " 2. E-Wallet (GoPay / OVO / DANA)\n";
+            cout << " 3. QRIS (Scan Semua Aplikasi)\n";
+            cout << "Pilihan Pembayaran (1-3): ";
+            cin >> pilihBayar;
+
+            if (pilihBayar < 1 || pilihBayar > 3) {
+                aturWarna(12);
+                cout << "\n[!] SALAH INPUT: Pilihan pembayaran tidak valid!\n";
+                aturWarna(7);
+                cout << "Tekan Enter untuk mencoba lagi...";
+                cin.get();
+                cin.ignore();
+                continue;
+            } else {
+                switch (pilihBayar) {
+                case 1: p.metodePembayaran = "Transfer Bank"; break;
+                case 2: p.metodePembayaran = "E-Wallet"; break;
+                case 3: p.metodePembayaran = "QRIS"; break;
+                default: p.metodePembayaran = "Non-Tunai"; break;
+                }
+            }
+            break; // Jika valid, keluar dari loop pembayaran
         }
 
 
@@ -366,46 +369,45 @@ int main() {
             p.namaPenumpang.push_back(nama);
             p.nomorKursi.push_back(kursi);
         }
+            // p = Pesanan{};
 
-        // Perhitungan Diskon (>1 Tiket)
-        long long subtotal = p.hargaSatuan * p.jumlahTiket;
-        if (p.jumlahTiket > 1) {
-            p.diskon = subtotal * 0.10; // Diskon 10%
-        } else {
-            p.diskon = 0;
-        }
-        p.totalHarga = subtotal - (long long)p.diskon;
-
-        // 5. Pembayaran Non-Tunai
+        // 1. Nama Pemesan dengan Loop Sederhana (Menggunakan cls & Header)
         while (true) {
             system("cls");
             tampilkanHeader();
-            aturWarna(14);
-            cout << "\n               >>> METODE PEMBAYARAN NON-TUNAI <<<\n";
-            aturWarna(7);
-            cout << " 1. Transfer Bank (BCA / Mandiri / BRI)\n";
-            cout << " 2. E-Wallet (GoPay / OVO / DANA)\n";
-            cout << " 3. QRIS (Scan Semua Aplikasi)\n";
-            cout << "Pilihan Pembayaran (1-3): ";
-            cin >> pilihBayar;
+            aturWarna(14); // Warna Kuning
+            cout << "\n[ DATA PEMESAN ]\n";
+            aturWarna(7); // Kembali ke warna putih normal
+            cout << "Masukkan Nama Pemesan : ";
+            getline(cin, p.namaPemesan);
 
-            if (pilihBayar < 1 || pilihBayar > 3) {
-                aturWarna(12);
-                cout << "\n[!] SALAH INPUT: Pilihan pembayaran tidak valid!\n";
+            if (p.namaPemesan.empty()) {
+                aturWarna(12); // Merah
+                cout << "\n[!] SALAH INPUT: Nama pemesan tidak boleh kosong!\n";
                 aturWarna(7);
                 cout << "Tekan Enter untuk mencoba lagi...";
                 cin.get();
-                cin.ignore();
                 continue;
-            } else {
-                switch (pilihBayar) {
-                case 1: p.metodePembayaran = "Transfer Bank"; break;
-                case 2: p.metodePembayaran = "E-Wallet"; break;
-                case 3: p.metodePembayaran = "QRIS"; break;
-                default: p.metodePembayaran = "Non-Tunai"; break;
-                }
             }
-            break; // Jika valid, keluar dari loop pembayaran
+            else if (p.namaPemesan.length() > 50) {
+                aturWarna(12);
+                cout << "\n[!] SALAH INPUT: Nama terlalu panjang! Maksimal 50 karakter.\n";
+                aturWarna(7);
+                cout << "Tekan Enter untuk mencoba lagi...";
+                cin.get();
+                continue;
+            }
+            else if (p.namaPemesan.find_first_not_of("abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ ") != string::npos) {
+                aturWarna(12);
+                cout << "\n[!] SALAH INPUT: Nama hanya boleh mengandung huruf dan spasi!\n";
+                aturWarna(7);
+                cout << "Tekan Enter untuk mencoba lagi...";
+                cin.get();
+                continue;
+            }
+            else {
+                break; // Jika valid, keluar dari loop nama
+            }
         }
 
         // 6. TAMPILAN RESI TIKET
@@ -416,7 +418,7 @@ int main() {
         cout << "===============================================================\n";
         aturWarna(7);
 
-        cout << left << setw(20) << " Nama Pemesan"     << ": " << p.namaPemesan << "\n";
+        cout << left << setw(20) << " Nama Pemesan"      << ": " << p.namaPemesan << "\n";
         cout << left << setw(20) << " Wilayah Tujuan"    << ": " << p.pulau << "\n";
         cout << left << setw(20) << " Rute Perjalanan"   << ": " << p.jurusan << "\n";
         cout << left << setw(20) << " Kelas Bus"         << ": " << p.kelas << "\n";
